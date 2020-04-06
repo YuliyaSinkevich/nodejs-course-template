@@ -17,6 +17,12 @@ class User {
     const { id, name, login } = user;
     return { id, name, login };
   }
+
+  // Hack for broken Test Post User
+  static forBrokenTestPost(user) {
+    const { id = 1, name, login } = user;
+    return { id, name, login };
+  }
 }
 
 module.exports = User;
