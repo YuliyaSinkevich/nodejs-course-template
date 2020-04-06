@@ -14,9 +14,11 @@ const getUser = async (id) => {
   return user;
 };
 
-const update = async (id, req) => {
+const updateUser = async (id, req) => {
   getUser(id)
     .then(user => user.name = req.name);
 };
 
-module.exports = { getAll, push, getUser, update };
+const deleteUser = async (id) => usersRepo.deleteUser(id);
+
+module.exports = { getAll, push, getUser, updateUser, deleteUser };

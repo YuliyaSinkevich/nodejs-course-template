@@ -1,17 +1,5 @@
 // instead of .json file
-const users = [
-  {
-    "id": "1",
-    "name": "User1",
-    "login": "User1Login",
-    "password": "P@55w0rd"
-  },
-  {
-    "id": "2",
-    "name": "User2",
-    "login": "User2Login",
-    "password": "P@55w0rd22"
-  }
+var users = [
 ];
 
 const getAll = async () => {
@@ -23,4 +11,8 @@ const push = async (user) => {
   users.push(user);
 };
 
-module.exports = { getAll, push };
+const deleteUser = async (id) => {
+  users = users.filter(user => user.id !== id);
+};
+
+module.exports = { getAll, push, deleteUser };

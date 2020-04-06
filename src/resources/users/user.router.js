@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('./user.model');
+const Board = require('../boards/board.model');
 const usersService = require('./user.service');
 
 router.route('/').get(async (req, res) => {
@@ -8,24 +9,24 @@ router.route('/').get(async (req, res) => {
   res.json(users.map(User.toResponse));
 })
   .post(async (req, res) => {
-    const user = new User(req.body);
-    usersService.push(user);
-
+    const user = await new User(req.body);
+    await usersService.push(user);
     res.json(User.forBrokenTestPost(user));
   });
 
 router.route('/:id')
   .get(async (req, res) => {
     const user = await usersService.getUser(req.params.id);
-    // console.log('req.params', req.params);
-    // console.log('req.body', req.body);
-    // console.log('user', user);
     res.json(User.toResponse(user));
   })
   .put(async (req, res) => {
     const user = await usersService.getUser(req.params.id, res);
-    usersService.update(req.params.id, req.body);
+    await usersService.updateUser(req.params.id, req.body);
     res.json(User.toResponse(user));
+  })
+  .delete(async (req, res) => {
+    await usersService.deleteUser(req.params.id);
+    res.status(204).send('The user has been deleted');
   });
 
 module.exports = router;
