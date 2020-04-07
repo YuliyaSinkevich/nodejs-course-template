@@ -9,7 +9,7 @@ const push = async (board) => {
   await boards.push(board);
 };
 
-const deleteBoard= async (id) => {
+const deleteBoard = async (id) => {
   boards = boards.filter(board => board.id !== id);
 };
 

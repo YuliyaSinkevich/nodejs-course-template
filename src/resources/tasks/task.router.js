@@ -16,6 +16,17 @@ router.route('/:boardId/tasks/:taskId')
   .get(async (req, res) => {
     const task = await tasksService.getTask(req.params.taskId);
     res.json(task);
+  })
+  .put(async (req, res) => {
+    const task = await tasksService.getTask(req.params.taskId);
+    await tasksService.updateTask(req.params.taskId, req.body);
+    res.json(task);
+  })
+  .delete(async (req, res) => {
+    //TODO
+    console.log('req.params', req.params);
+    await tasksService.deleteTask(req.params.taskId, req.params.boardId);
+    res.status(204).send('Del');
   });
 
 // TODO: put, delete

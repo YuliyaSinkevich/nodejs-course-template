@@ -1,7 +1,5 @@
 // instead of .json file
-var tasks = [
-
-];
+var tasks = [];
 
 const getAll = async () => {
   return tasks;
@@ -11,4 +9,8 @@ const push = async (task) => {
   tasks.push(task);
 };
 
-module.exports = { getAll, push };
+const deleteTask = async (taskId, boardId) => {
+  tasks = tasks.filter(task => task.id !== taskId);
+};
+
+module.exports = { getAll, push, deleteTask };

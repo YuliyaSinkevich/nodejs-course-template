@@ -10,4 +10,11 @@ const getTask = async (id) => {
   });
 };
 
-module.exports = { getAll, push, getTask };
+const updateTask = async (id, req) => {
+  getTask(id)
+    .then(task => task.title = req.title);
+};
+
+const deleteTask = async (taskId, boardId) => tasksRepo.deleteTask(taskId, boardId);
+
+module.exports = { getAll, push, getTask, updateTask, deleteTask };

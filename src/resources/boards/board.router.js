@@ -7,7 +7,6 @@ router.route('/').get(async (req, res) => {
   res.json(boards);
 })
   .post(async (req, res) => {
-    console.log('req.bodyreq.body', req.body)
     const board = await new Board(req.body);
     await boardsService.push(board);
     res.json(board);
@@ -24,6 +23,7 @@ router.route('/:id')
     res.json(board);
   })
   .delete(async (req, res) => {
+    // TODO
     if (!req.params.id) {
       res.status(401).send('Access token is missing or invalid');
     }
