@@ -1,3 +1,13 @@
+const validator = require('validator');
+const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = require('../logging/constants');
+
+const logRequests = async (req, res, next) => {
+  const { method, url, params, body } = req;
+  console.log('////////////////// LOGGING REQUEST //////////////////');
+  console.log('METHOD -->', method, '\nURL -->', url, '\nPARAMS -->', params, '\nBODY -->', body);
+  next();
+};
+
 class ErrorHandler extends Error {
   constructor (status, message) {
     super();
@@ -6,24 +16,21 @@ class ErrorHandler extends Error {
   }
 }
 
-const handleError = (err, res) => {
-  const { status, message } = err;
-  console.log('status');
+const sendResponse = (error, res) => {
+  const { status = INTERNAL_SERVER_ERROR.code, message = INTERNAL_SERVER_ERROR.message } = error;
   res.status(status).json({
-    status,
-    message,
+    status: 'error',
+    statusCode: status,
+    message: message,
   });
-};
-
-const logRequests = (req, res, next) => {
-  const { url, params, body } = req;
-  console.log('////////////////// LOGGING REQUEST //////////////////')
-  console.log('\nURL -->', url, '\nPARAMS -->', params, '\nBODY -->', body);
-  next();
 };
 
 const log = (error) => {
   console.log('////////////////// LOGGING ERROR //////////////////', error.status, error.message);
+};
+
+const validateId = async (id) => {
+  if (!validator.isUUID(id)) throw new ErrorHandler(BAD_REQUEST.code, BAD_REQUEST.message);
 };
 
 const handleErrors = func => async (req, res, next) => {
@@ -35,18 +42,13 @@ const handleErrors = func => async (req, res, next) => {
 };
 
 const createError = (error, req, res, next) => {
-  res.status(error.status).json({
-    status: 'error',
-    statusCode: error.status,
-    message: error.message,
-  });
+  sendResponse(error, res);
   // Logging error
   log(error);
 };
 
 module.exports = {
-  logRequests, ErrorHandler,
-  handleError, handleErrors, createError
+  logRequests, validateId, ErrorHandler, handleErrors, createError
 };
 
 // При передаче какого-либо объекта в функцию next() (кроме строки 'route'),

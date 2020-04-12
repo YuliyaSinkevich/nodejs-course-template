@@ -1,6 +1,8 @@
 const router = require('express').Router();
+const { NOT_FOUND } = require('../logging/constants');
 const Board = require('./board.model');
 const boardsService = require('./board.service');
+const { validateId, ErrorHandler, handleErrors } = require('../logging');
 
 router.route('/').get(async (req, res) => {
   const boards = await boardsService.getAll();
@@ -13,29 +15,31 @@ router.route('/').get(async (req, res) => {
   });
 
 router.route('/:id')
-  .get(async (req, res) => {
+  .get(handleErrors(async (req, res) => {
+    await validateId(req.params.id);
+
     const board = await boardsService.getBoard(req.params.id);
+    if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
+
     res.json(board);
-  })
-  .put(async (req, res) => {
+  }))
+  .put(handleErrors(async (req, res) => {
+    await validateId(req.params.id);
+
     const board = await boardsService.getBoard(req.params.id);
+    if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
+
     await boardsService.updateBoard(req.params.id, req.body);
-    res.json(board);
-  })
-  .delete(async (req, res) => {
-    // TODO
-    if (!req.params.id) {
-      res.status(401).send('Access token is missing or invalid');
-    }
+    res.status(200).json(board);
+  }))
+  .delete(handleErrors(async (req, res) => {
+    await validateId(req.params.id);
 
     const board = await boardsService.getBoard(req.params.id);
-
-    if (!board) {
-      res.status(404).send('Board not found');
-    }
+    if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
 
     await boardsService.deleteBoard(req.params.id);
     res.status(204).send('The board and all its tasks has been deleted');
-  });
+  }));
 
 module.exports = router;

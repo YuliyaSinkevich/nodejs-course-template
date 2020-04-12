@@ -10,10 +10,7 @@ const getTask = async (id) => {
   });
 };
 
-const updateTask = async (id, req) => {
-  getTask(id)
-    .then(task => task.title = req.title);
-};
+const updateTask = async (taskId, newTask) => tasksRepo.update(taskId, newTask);
 
 const deleteTask = async (taskId, boardId) => tasksRepo.deleteTask(taskId, boardId);
 

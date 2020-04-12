@@ -2,8 +2,8 @@ const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const path = require('path');
 const YAML = require('yamljs');
-const winston = require('winston');
-const { logRequests, createError } = require('./resources/logging');
+const { logRequests, handleErrors, ErrorHandler, createError } = require('./resources/logging');
+const { NOT_FOUND } = require('./resources/logging/constants');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
 const userRouter = require('./resources/users/user.router');
@@ -29,7 +29,11 @@ app.use('/users', userRouter);
 
 app.use('/boards', boardRouter);
 
-app.use('/boards', taskRouter);
+app.use('/boards/:id/tasks', taskRouter);
+
+app.use('*', handleErrors(async (req, res) => {
+  throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
+}));
 
 //Промежуточный обработчик для обработки ошибок должен быть определен последним, после указания всех app.use()
 app.use(createError);

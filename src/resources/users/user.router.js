@@ -1,10 +1,9 @@
 const router = require('express').Router();
-const validator = require('validator');
-const { ACCESS_TOKEN_IS_MISSING_OR_INVALID } = require('../logging/constants');
+const { NOT_FOUND } = require('../logging/constants');
 const User = require('./user.model');
 const Board = require('../boards/board.model');
 const usersService = require('./user.service');
-const { ErrorHandler, handleErrors } = require('../logging');
+const { validateId, ErrorHandler, handleErrors } = require('../logging');
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
@@ -19,20 +18,30 @@ router.route('/').get(async (req, res) => {
 
 router.route('/:id')
   .get(handleErrors(async (req, res) => {
-    // if (!validator.isUUID(req.params.id)) throw new ErrorHandler(ACCESS_TOKEN_IS_MISSING_OR_INVALID.code, ACCESS_TOKEN_IS_MISSING_OR_INVALID.text);
-    // console.log(validator.isUUID(req.params.id));
+    await validateId(req.params.id);
+
     const user = await usersService.getUser(req.params.id);
+    if (!user) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
 
     res.status(200).json(User.toResponse(user));
   }))
-  .put(async (req, res) => {
-    const user = await usersService.getUser(req.params.id, res);
+  .put(handleErrors(async (req, res) => {
+    await validateId(req.params.id);
+
+    const user = await usersService.getUser(req.params.id);
+    if (!user) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
+
     await usersService.updateUser(req.params.id, req.body);
-    res.json(User.toResponse(user));
-  })
-  .delete(async (req, res) => {
+    res.status(200).json(User.toResponse(user));
+  }))
+  .delete(handleErrors(async (req, res) => {
+    await validateId(req.params.id);
+
+    const user = await usersService.getUser(req.params.id);
+    if (!user) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
+
     await usersService.deleteUser(req.params.id);
     res.status(204).send('The user has been deleted');
-  });
+  }));
 
 module.exports = router;

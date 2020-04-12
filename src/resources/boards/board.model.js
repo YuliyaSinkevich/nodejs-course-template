@@ -5,7 +5,11 @@ class Board {
   constructor ({
     id = uuid(),
     title = 'boardTitle',
-    columns = [].push(new Column()), // replace
+    columns = [{
+      id: uuid(),
+      title: 'columnTitle',
+      order: 0,
+    }], // replace
   } = {}) {
     this.id = id;
     this.title = title;

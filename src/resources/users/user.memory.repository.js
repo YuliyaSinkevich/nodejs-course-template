@@ -1,16 +1,5 @@
 // instead of .json file
-var users = [
-  {
-    "id": "1",
-    "name": "USER",
-    "login": "user"
-  },
-  {
-    "id": "2",
-    "name": "USER",
-    "login": "user"
-  }
-];
+var users = [];
 
 const getAll = async () => {
   // TODO: mock implementation. should be replaced during task development
@@ -21,8 +10,13 @@ const push = async (user) => {
   users.push(user);
 };
 
+const update = async (userId, newUser) => {
+  const index = await users.findIndex(item => item.id === userId);
+  users[index] = newUser;
+};
+
 const deleteUser = async (id) => {
   users = users.filter(user => user.id !== id);
 };
 
-module.exports = { getAll, push, deleteUser };
+module.exports = { getAll, push, update, deleteUser };

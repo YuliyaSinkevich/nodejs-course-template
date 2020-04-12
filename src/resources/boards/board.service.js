@@ -10,10 +10,7 @@ const getBoard = async (id) => {
 
 const push = async (board) => boardsRepo.push(board);
 
-const updateBoard = async (id, req) => {
-  getBoard(id)
-    .then(board => board.title = req.title);
-};
+const updateBoard = async (boardId, newBoard) => await boardsRepo.update(boardId, newBoard);
 
 const deleteBoard = async (id) => boardsRepo.deleteBoard(id);
 

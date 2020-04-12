@@ -1,6 +1,4 @@
-const { logRequests, handleErrors, createError, ErrorHandler,
-  handleError } = require('./loggerMiddleware');
+const { logRequests, validateId, handleErrors, createError, ErrorHandler } = require('./loggerMiddleware');
 const loggerWinston = require('./loggerWinston');
 
-module.exports = { logRequests, ErrorHandler,
-  handleError, handleErrors, createError, loggerWinston };
+module.exports = { logRequests, validateId, ErrorHandler, handleErrors, createError, loggerWinston };
