@@ -10,7 +10,7 @@ const push = async task => {
 };
 
 const update = async (taskId, newTask) => {
-  const index = await users.findIndex(item => item.id === taskId);
+  const index = await tasks.findIndex(item => item.id === taskId);
   tasks[index] = newTask;
 };
 

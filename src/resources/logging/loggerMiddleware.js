@@ -1,5 +1,5 @@
 const validator = require('validator');
-const { BAD_REQUEST } = require('../logging/constants');
+const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = require('../logging/constants');
 
 const logRequests = async (req, res, next) => {
   const { method, url, params, body } = req;
@@ -26,8 +26,11 @@ class ErrorHandler extends Error {
 }
 
 const sendResponse = (error, res) => {
-  const { status, message } = error;
-  res.status(status).json({
+  const {
+    status = INTERNAL_SERVER_ERROR.code,
+    message = INTERNAL_SERVER_ERROR.message
+  } = error;
+  res.status(INTERNAL_SERVER_ERROR.code).json({
     status: 'error',
     statusCode: status,
     message
@@ -35,10 +38,14 @@ const sendResponse = (error, res) => {
 };
 
 const log = error => {
+  const {
+    status = INTERNAL_SERVER_ERROR.code,
+    message = INTERNAL_SERVER_ERROR.message
+  } = error;
   console.log(
     '////////////////// LOGGING ERROR //////////////////',
-    error.status,
-    error.message
+    status,
+    message
   );
 };
 
