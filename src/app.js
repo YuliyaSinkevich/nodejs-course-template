@@ -2,6 +2,8 @@ const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const path = require('path');
 const YAML = require('yamljs');
+const winston = require('winston');
+const { logRequests, createError } = require('./resources/logging');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
 const userRouter = require('./resources/users/user.router');
@@ -21,10 +23,16 @@ app.use('/', (req, res, next) => {
   next();
 });
 
+app.use(logRequests);
+
 app.use('/users', userRouter);
 
 app.use('/boards', boardRouter);
 
 app.use('/boards', taskRouter);
 
+//Промежуточный обработчик для обработки ошибок должен быть определен последним, после указания всех app.use()
+app.use(createError);
+
+//TODO add *
 module.exports = app;

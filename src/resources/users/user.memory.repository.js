@@ -1,5 +1,15 @@
 // instead of .json file
 var users = [
+  {
+    "id": "1",
+    "name": "USER",
+    "login": "user"
+  },
+  {
+    "id": "2",
+    "name": "USER",
+    "login": "user"
+  }
 ];
 
 const getAll = async () => {
