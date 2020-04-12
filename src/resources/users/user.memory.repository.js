@@ -1,12 +1,12 @@
 // instead of .json file
-var users = [];
+let users = [];
 
 const getAll = async () => {
   // TODO: mock implementation. should be replaced during task development
   return users;
 };
 
-const push = async (user) => {
+const push = async user => {
   users.push(user);
 };
 
@@ -15,7 +15,7 @@ const update = async (userId, newUser) => {
   users[index] = newUser;
 };
 
-const deleteUser = async (id) => {
+const deleteUser = async id => {
   users = users.filter(user => user.id !== id);
 };
 

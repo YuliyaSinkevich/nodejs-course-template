@@ -1,11 +1,11 @@
 // instead of .json file
-var tasks = [];
+let tasks = [];
 
 const getAll = async () => {
   return tasks;
 };
 
-const push = async (task) => {
+const push = async task => {
   tasks.push(task);
 };
 

@@ -1,11 +1,11 @@
 // instead of .json file
-var boards = [];
+let boards = [];
 
 const getAll = async () => {
   return boards;
 };
 
-const push = async (board) => {
+const push = async board => {
   await boards.push(board);
 };
 
@@ -14,7 +14,7 @@ const update = async (boardId, newBoard) => {
   boards[index] = newBoard;
 };
 
-const deleteBoard = async (id) => {
+const deleteBoard = async id => {
   boards = boards.filter(board => board.id !== id);
 };
 

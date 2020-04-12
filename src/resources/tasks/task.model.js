@@ -1,17 +1,16 @@
 const uuid = require('uuid');
 
 class Task {
-  constructor ({
+  constructor({
     boardId,
-    task:
-      {
-        id = uuid(),
-        title = 'taskTitle',
-        order = 0,
-        description = 'None',
-        userId = null,
-        columnId = null,
-      }
+    task: {
+      id = uuid(),
+      title = 'taskTitle',
+      order = 0,
+      description = 'None',
+      userId = null,
+      columnId = null
+    }
   } = {}) {
     this.id = id;
     this.title = title;
@@ -24,10 +23,10 @@ class Task {
 }
 
 class Column {
-  constructor ({
+  constructor({
     id = uuid(),
     title = 'columnTitle',
-    tasks = [].push(new Task()), //replace
+    tasks = [].push(new Task()) // replace
   } = {}) {
     this.id = id;
     this.title = title;
