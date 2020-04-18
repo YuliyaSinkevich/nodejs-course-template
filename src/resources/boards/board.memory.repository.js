@@ -5,6 +5,8 @@ const getAll = async () => {
   return boards;
 };
 
+const getBoard = async boardId => boards.find(board => board.id === boardId);
+
 const push = async board => {
   await boards.push(board);
 };
@@ -14,8 +16,8 @@ const update = async (boardId, newBoard) => {
   boards[index] = newBoard;
 };
 
-const deleteBoard = async id => {
-  boards = boards.filter(board => board.id !== id);
+const deleteBoard = async boardId => {
+  boards = boards.filter(board => board.id !== boardId);
 };
 
-module.exports = { getAll, push, update, deleteBoard };
+module.exports = { getAll, push, getBoard, update, deleteBoard };

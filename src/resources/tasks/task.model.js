@@ -23,14 +23,10 @@ class Task {
 }
 
 class Column {
-  constructor({
-    id = uuid(),
-    title = 'columnTitle',
-    tasks = [].push(new Task()) // replace
-  } = {}) {
+  constructor({ id = uuid(), title = 'columnTitle', order } = {}) {
     this.id = id;
     this.title = title;
-    this.tasks = tasks;
+    this.order = order;
   }
 }
 

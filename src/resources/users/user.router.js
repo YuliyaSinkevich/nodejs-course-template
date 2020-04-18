@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { NOT_FOUND } = require('../logging/constants');
 const User = require('./user.model');
-const Board = require('../boards/board.model');
 const usersService = require('./user.service');
 const { validateId, ErrorHandler, handleErrors } = require('../logging');
 

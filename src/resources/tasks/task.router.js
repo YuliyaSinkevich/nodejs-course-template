@@ -1,28 +1,31 @@
-const router = require('express').Router({ mergeParams: true });
+const router = require('express').Router();
 const { Task } = require('./task.model');
 const tasksService = require('./task.service');
 const { validateId, ErrorHandler, handleErrors } = require('../logging');
 const { NOT_FOUND } = require('../logging/constants');
 
 router
-  .route('/')
+  .route('/:boardId/tasks/')
   .get(async (req, res) => {
     const tasks = await tasksService.getAll();
     res.json(tasks);
   })
   .post(async (req, res) => {
-    const task = await new Task({ boardId: req.params.id, task: req.body });
+    const task = await new Task({
+      boardId: req.params.boardId,
+      task: req.body
+    });
     await tasksService.push(task);
     res.json(task);
   });
 
 router
-  .route('/:id')
+  .route('/:boardId/tasks/:taskId')
   .get(
     handleErrors(async (req, res) => {
-      await validateId(req.params.id);
+      await validateId(req.params.taskId);
 
-      const task = await tasksService.getTask(req.params.id);
+      const task = await tasksService.getTask(req.params.taskId);
       if (!task) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
 
       res.json(task);
@@ -30,27 +33,22 @@ router
   )
   .put(
     handleErrors(async (req, res) => {
-      await validateId(req.params.id);
+      await validateId(req.params.taskId);
 
-      const task = await tasksService.getTask(req.params.id);
+      const task = await tasksService.getTask(req.params.taskId);
       if (!task) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
 
-      await tasksService.updateTask(req.params.id, req.body);
-      res.json(req.body);
+      await tasksService.updateTask(req.params.taskId, req.body);
+      res.json(task);
     })
   )
   .delete(
     handleErrors(async (req, res) => {
-      await validateId(req.params.id);
+      await validateId(req.params.taskId);
 
-      const task = await tasksService.getTask(req.params.id);
-      if (!task) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
-
-      await tasksService.deleteTask(req.params.id, req.params.boardId);
+      await tasksService.deleteTask(req.params.boardId, req.params.taskId);
       res.status(204).send('Del');
     })
   );
-
-// TODO: put, delete
 
 module.exports = router;

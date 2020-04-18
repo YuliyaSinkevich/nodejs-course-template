@@ -30,7 +30,7 @@ const sendResponse = (error, res) => {
     status = INTERNAL_SERVER_ERROR.code,
     message = INTERNAL_SERVER_ERROR.message
   } = error;
-  res.status(INTERNAL_SERVER_ERROR.code).json({
+  res.status(status).json({
     status: 'error',
     statusCode: status,
     message

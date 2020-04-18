@@ -35,7 +35,7 @@ app.use('/users', userRouter);
 
 app.use('/boards', boardRouter);
 
-app.use('/boards/:id/tasks', taskRouter);
+app.use('/boards', taskRouter);
 
 app.use(
   '*',

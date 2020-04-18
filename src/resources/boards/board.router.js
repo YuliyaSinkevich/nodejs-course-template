@@ -17,12 +17,12 @@ router
   });
 
 router
-  .route('/:id')
+  .route('/:boardId')
   .get(
     handleErrors(async (req, res) => {
-      await validateId(req.params.id);
+      await validateId(req.params.boardId);
 
-      const board = await boardsService.getBoard(req.params.id);
+      const board = await boardsService.getBoard(req.params.boardId);
       if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
 
       res.json(board);
@@ -30,23 +30,23 @@ router
   )
   .put(
     handleErrors(async (req, res) => {
-      await validateId(req.params.id);
+      await validateId(req.params.boardId);
 
-      const board = await boardsService.getBoard(req.params.id);
+      const board = await boardsService.getBoard(req.params.boardId);
       if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
 
-      await boardsService.updateBoard(req.params.id, req.body);
+      await boardsService.updateBoard(req.params.boardId, req.body);
       res.status(200).json(board);
     })
   )
   .delete(
     handleErrors(async (req, res) => {
-      await validateId(req.params.id);
+      await validateId(req.params.boardId);
 
-      const board = await boardsService.getBoard(req.params.id);
+      const board = await boardsService.getBoard(req.params.boardId);
       if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
 
-      await boardsService.deleteBoard(req.params.id);
+      await boardsService.deleteBoard(req.params.boardId);
       res.status(204).send('The board and all its tasks has been deleted');
     })
   );

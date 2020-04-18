@@ -5,6 +5,8 @@ const getAll = async () => {
   return tasks;
 };
 
+const getTask = async taskId => tasks.find(task => task.id === taskId);
+
 const push = async task => {
   tasks.push(task);
 };
@@ -14,8 +16,13 @@ const update = async (taskId, newTask) => {
   tasks[index] = newTask;
 };
 
-const deleteTask = async (taskId, boardId) => {
+const unassignTasks = async userId => {
+  const tasksToUpdate = tasks.filter(task => task.userId === userId);
+  tasksToUpdate.map(task => update(task, (task.userId = null)));
+};
+
+const deleteTask = async taskId => {
   tasks = tasks.filter(task => task.id !== taskId);
 };
 
-module.exports = { getAll, push, update, deleteTask };
+module.exports = { getAll, getTask, push, update, unassignTasks, deleteTask };
