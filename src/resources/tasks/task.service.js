@@ -1,10 +1,10 @@
-const tasksRepo = require('./task.memory.repository');
+const tasksRepo = require('./task.db.repository');
 const { ErrorHandler } = require('../logging');
 const { NOT_FOUND } = require('../logging/constants');
 
 const getAll = () => tasksRepo.getAll();
 
-const push = task => tasksRepo.push(task);
+const push = task => tasksRepo.add(task);
 
 const getTask = taskId => tasksRepo.getTask(taskId);
 
