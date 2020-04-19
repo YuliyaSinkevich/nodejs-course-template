@@ -8,20 +8,18 @@ router
   .route('/')
   .get(async (req, res) => {
     const boards = await boardsService.getAll();
-    res.json(boards);
+    res.status(200).json(boards.map(Board.toResponse));
   })
   .post(async (req, res) => {
     const board = await new Board(req.body);
     await boardsService.push(board);
-    res.json(Board.toResponse(board));
+    await res.status(200).json(Board.toResponse(board));
   });
 
 router
   .route('/:boardId')
   .get(
     handleErrors(async (req, res) => {
-      await validateId(req.params.boardId);
-
       if (!req.params.boardId) {
         throw new ErrorHandler(BAD_REQUEST.code, BAD_REQUEST.message);
       }
@@ -29,12 +27,14 @@ router
       const board = await boardsService.getBoard(req.params.boardId);
       if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
 
-      res.json(Board.toResponse(board));
+      res.status(200).json(Board.toResponse(board));
     })
   )
   .put(
     handleErrors(async (req, res) => {
-      await validateId(req.params.boardId);
+      if (!req.params.boardId) {
+        throw new ErrorHandler(BAD_REQUEST.code, BAD_REQUEST.message);
+      }
 
       const board = await boardsService.getBoard(req.params.boardId);
       if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
@@ -45,7 +45,9 @@ router
   )
   .delete(
     handleErrors(async (req, res) => {
-      await validateId(req.params.boardId);
+      if (!req.params.boardId) {
+        throw new ErrorHandler(BAD_REQUEST.code, BAD_REQUEST.message);
+      }
 
       const board = await boardsService.getBoard(req.params.boardId);
       if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);

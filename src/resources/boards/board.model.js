@@ -6,6 +6,10 @@ const boardSchema = new mongoose.Schema(
     title: String,
     columns: [
       {
+        _id: {
+          type: String,
+          default: uuid
+        },
         title: String,
         order: Number
       }

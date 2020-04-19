@@ -8,16 +8,16 @@ const getAll = async () => {
   return Board.find({});
 };
 
-const getBoard = async boardId => {
-  return Board.findOne({ _id: boardId });
+const getBoard = async id => {
+  return Board.findOne({ _id: id });
 };
 
-const update = async (boardId, newBoard) => {
-  return Board.updateOne({ _id: boardId }, newBoard);
+const update = async (id, newBoard) => {
+  return Board.updateOne({ _id: id }, newBoard);
 };
 
-const deleteBoard = async boardId => {
-  return Board.deleteOne({ _id: boardId });
+const deleteBoard = async id => {
+  return Board.deleteOne({ _id: id });
 };
 
 module.exports = { add, getAll, getBoard, update, deleteBoard };
