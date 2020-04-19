@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { NOT_FOUND } = require('../logging/constants');
+const { NOT_FOUND, BAD_REQUEST } = require('../logging/constants');
 const Board = require('./board.model');
 const boardsService = require('./board.service');
 const { validateId, ErrorHandler, handleErrors } = require('../logging');
@@ -13,7 +13,7 @@ router
   .post(async (req, res) => {
     const board = await new Board(req.body);
     await boardsService.push(board);
-    res.json(board);
+    res.json(Board.toResponse(board));
   });
 
 router
@@ -22,10 +22,14 @@ router
     handleErrors(async (req, res) => {
       await validateId(req.params.boardId);
 
+      if (!req.params.boardId) {
+        throw new ErrorHandler(BAD_REQUEST.code, BAD_REQUEST.message);
+      }
+
       const board = await boardsService.getBoard(req.params.boardId);
       if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
 
-      res.json(board);
+      res.json(Board.toResponse(board));
     })
   )
   .put(
@@ -36,7 +40,7 @@ router
       if (!board) throw new ErrorHandler(NOT_FOUND.code, NOT_FOUND.message);
 
       await boardsService.updateBoard(req.params.boardId, req.body);
-      res.status(200).json(board);
+      res.status(200).json(Board.toResponse(board));
     })
   )
   .delete(

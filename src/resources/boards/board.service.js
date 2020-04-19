@@ -1,11 +1,11 @@
-const boardsRepo = require('./board.memory.repository');
+const boardsRepo = require('./board.db.repository');
 const tasksService = require('../tasks/task.service');
 
 const getAll = () => boardsRepo.getAll();
 
 const getBoard = async boardId => boardsRepo.getBoard(boardId);
 
-const push = async board => boardsRepo.push(board);
+const push = async board => boardsRepo.add(board);
 
 const updateBoard = (boardId, newBoard) => boardsRepo.update(boardId, newBoard);
 
