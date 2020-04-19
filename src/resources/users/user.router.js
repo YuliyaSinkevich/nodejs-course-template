@@ -13,7 +13,7 @@ router
   })
   .post(async (req, res) => {
     const user = await new User(req.body);
-    await usersService.push(user);
+    await usersService.add(user);
     res.json(User.forBrokenTestPost(user));
   });
 
