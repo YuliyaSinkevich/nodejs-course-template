@@ -14,7 +14,7 @@ router
   .post(async (req, res) => {
     const user = await new User(req.body);
     await usersService.add(user);
-    res.json(User.forBrokenTestPost(user));
+    res.json(User.toResponse(user));
   });
 
 router

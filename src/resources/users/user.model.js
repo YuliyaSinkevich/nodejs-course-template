@@ -19,11 +19,6 @@ userSchema.statics.toResponse = user => {
   return { id, name, login };
 };
 
-userSchema.statics.forBrokenTestPost = user => {
-  const { id = 1, name, login } = user;
-  return { id, name, login };
-};
-
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
