@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require('express').Router({ mergeParams: true });
 const { NOT_FOUND, BAD_REQUEST } = require('../logging/constants');
 const Board = require('./board.model');
 const boardsService = require('./board.service');

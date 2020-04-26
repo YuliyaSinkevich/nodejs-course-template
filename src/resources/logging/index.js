@@ -4,7 +4,8 @@ const {
   handleErrors,
   createError,
   ErrorHandler,
-  log
+  log,
+  sendResponse
 } = require('./loggerMiddleware');
 const loggerWinston = require('./loggerWinston');
 
@@ -15,5 +16,6 @@ module.exports = {
   handleErrors,
   createError,
   log,
-  loggerWinston
+  loggerWinston,
+  sendResponse
 };

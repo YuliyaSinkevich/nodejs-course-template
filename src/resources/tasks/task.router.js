@@ -1,23 +1,23 @@
-const router = require('express').Router();
+const router = require('express').Router({ mergeParams: true });
 const Task = require('./task.model');
 const tasksService = require('./task.service');
 const { validateId, ErrorHandler, handleErrors } = require('../logging');
 const { NOT_FOUND, BAD_REQUEST } = require('../logging/constants');
 
 router
-  .route('/:boardId/tasks/')
+  .route('/')
   .get(async (req, res) => {
     const tasks = await tasksService.getAll();
     res.status(200).json(tasks.map(Task.toResponse));
   })
   .post(async (req, res) => {
-    const task = await new Task({...req.body, boardId: req.params.boardId});
+    const task = await new Task({ ...req.body, boardId: req.params.boardId });
     await tasksService.push(task);
     res.status(200).json(Task.toResponse(task));
   });
 
 router
-  .route('/:boardId/tasks/:taskId')
+  .route('/:taskId')
   .get(
     handleErrors(async (req, res) => {
       if (!req.params.boardId || !req.params.taskId) {

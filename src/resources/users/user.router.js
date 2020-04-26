@@ -13,7 +13,7 @@ router
   })
   .post(async (req, res) => {
     const user = await new User(req.body);
-    await usersService.add(user);
+    await usersService.add(User.hash(user));
     res.json(User.toResponse(user));
   });
 

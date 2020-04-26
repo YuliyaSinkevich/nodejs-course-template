@@ -75,7 +75,8 @@ module.exports = {
   ErrorHandler,
   handleErrors,
   createError,
-  log
+  log,
+  sendResponse
 };
 
 // При передаче какого-либо объекта в функцию next() (кроме строки 'route'),
