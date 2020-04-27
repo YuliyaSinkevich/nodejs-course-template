@@ -1,4 +1,3 @@
-// тут создавать токен например
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../users/user.model');
@@ -15,16 +14,17 @@ const createJWT = async (req, res) => {
     user && (await bcrypt.compare(req.body.password, user.password));
 
   if (!(user && passwordCorrect)) {
-    return res.status(401).json({
-      error: 'invalid username or password'
-    });
+    throw new ErrorHandler(
+      ACCESS_TOKEN_IS_MISSING_OR_INVALID.code,
+      ACCESS_TOKEN_IS_MISSING_OR_INVALID.message
+    );
   }
 
-  const userForToken = {
+  const dataForToken = {
     login: user.login,
     id: user._id
   };
-  const token = jwt.sign(userForToken, JWT_SECRET_KEY);
+  const token = jwt.sign(dataForToken, JWT_SECRET_KEY);
   return { id: user.id, login: user.login, token };
 };
 

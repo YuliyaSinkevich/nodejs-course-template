@@ -33,15 +33,13 @@ app.use('/', (req, res, next) => {
 
 app.use(logRequests);
 
-app.use(authorization);
-
 app.use('/login', loginRouter);
 
-app.use('/users', userRouter);
+app.use('/users', authorization, userRouter);
 
-app.use('/boards/', boardRouter);
+app.use('/boards/', authorization, boardRouter);
 
-app.use('/boards/:boardId/tasks/', taskRouter);
+app.use('/boards/:boardId/tasks/', authorization, taskRouter);
 
 app.use(
   '*',
